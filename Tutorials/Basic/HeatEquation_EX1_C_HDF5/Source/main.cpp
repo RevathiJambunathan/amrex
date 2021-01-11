@@ -3,6 +3,7 @@
 #include <AMReX_PlotFileUtil.H>
 #include <AMReX_ParmParse.H>
 #include <AMReX_Print.H>
+#include "Parser/WarpXParserWrapper.H"
 
 #include "myfunc.H"
 

@@ -11,11 +11,16 @@ DIM          = 3
 USE_HDF5 = TRUE
 HDF5_HOME=/usr/local/hdf5-1.12.4_install
 
+DEFINES += -DWARPX_PARSER_DEPTH=24
 include $(AMREX_HOME)/Tools/GNUMake/Make.defs
 
 include ../Source/Make.package
 VPATH_LOCATIONS  += ../Source
 INCLUDE_LOCATIONS += ../Source
+
+include ../Source/Parser/Make.package
+INCLUDE_LOCATIONS += ../Source/Parser
+VPATH_LOCATIONS   += ../Source/Parser
 
 include $(AMREX_HOME)/Src/Base/Make.package
 
