@@ -104,3 +104,36 @@ void init_phi(amrex::MultiFab& phi_new, amrex::Geometry const& geom){
         });
     }
 }
+
+/** Initialize phi by calling user-defined parser function */
+void init_phi_withparser( amrex::MultiFab& phi_new, amrex::Geometry const& geom,
+                          HostDeviceParser<3> const& phi_parser)
+{
+    GpuArray<Real,AMREX_SPACEDIM> dx = geom.CellSizeArray();
+    GpuArray<Real,AMREX_SPACEDIM> prob_lo = geom.ProbLoArray();
+    amrex::IntVect mf_nodal_flag = phi_new.ixType().toIntVect();
+    for (MFIter mfi(phi_new); mfi.isValid(); ++mfi )
+    {
+        const Box& vbx = mfi.validbox();
+        auto const& phi_arr = phi_new.array(mfi);
+ 
+        amrex::ParallelFor (vbx,
+        [=] AMREX_GPU_DEVICE(int i, int j, int k)
+        {
+            // Determine x co-ordinate corresponding to index i
+            amrex::Real fac_x = (1._rt - mf_nodal_flag[0]) * dx[0] * 0.5_rt;
+            amrex::Real x = i * dx[0] + prob_lo[0] + fac_x;
+
+            // Determine y co-ordinate corresponding to index j
+            amrex::Real fac_y = (1._rt - mf_nodal_flag[1]) * dx[1] * 0.5_rt;
+            amrex::Real y = j * dx[1] + prob_lo[1] + fac_y;
+
+            // Determine z co-ordinate corresponding to index k
+            amrex::Real fac_z = (1._rt - mf_nodal_flag[2]) * dx[2] * 0.5_rt;
+            amrex::Real z = k * dx[2] + prob_lo[2] + fac_z;
+
+            // initialize phi at (x,y,z);
+            phi_arr(i,j,k) = phi_parser(x,y,z);
+        });
+    }
+}
