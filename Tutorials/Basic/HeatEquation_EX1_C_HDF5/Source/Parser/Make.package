@@ -1,4 +1,4 @@
-CEXE_sources += wp_parser_y.cpp wp_parser.tab.cpp wp_parser.lex.cpp wp_parser_c.cpp WarpXParser.cpp ParserUtil.cpp
-CEXE_headers += GpuParser.H WarpXParser.H WarpXParserWrapper.H ParserUtil.H wp_parser_c.h wp_parser.lex.h wp_parser.tab.h wp_parser_y.h
+CEXE_sources += wp_parser_y.cpp wp_parser.tab.cpp wp_parser.lex.cpp wp_parser_c.cpp Parser.cpp ParserUtil.cpp
+CEXE_headers += GpuParser.H Parser.H ParserWrapper.H ParserUtil.H wp_parser_c.h wp_parser.lex.h wp_parser.tab.h wp_parser_y.h
 
 

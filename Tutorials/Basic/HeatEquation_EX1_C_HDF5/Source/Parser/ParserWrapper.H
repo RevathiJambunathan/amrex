@@ -1,13 +1,13 @@
 /* Copyright 2020 Revathi Jambunathan, Weiqun Zhang
  *
- * This file is part of WarpX.
+ * This file is from WarpX.
  *
  * License: BSD-3-Clause-LBNL
  */
-#ifndef WARPX_PARSER_WRAPPER_H_
-#define WARPX_PARSER_WRAPPER_H_
+#ifndef PARSER_WRAPPER_H_
+#define PARSER_WRAPPER_H_
 
-#include "Parser/WarpXParser.H"
+#include "Parser/Parser.H"
 #include "Parser/GpuParser.H"
 
 #include <AMReX_Gpu.H>

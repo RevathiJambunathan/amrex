@@ -1,20 +1,20 @@
 /* Copyright 2019 Weiqun Zhang
  *
- * This file is part of WarpX.
+ * This file is from WarpX originally written by Weiqun Zhang.
  *
  * License: BSD-3-Clause-LBNL
  */
 
 #include <algorithm>
-#include "WarpXParser.H"
+#include "Parser.H"
 
-WarpXParser::WarpXParser (std::string const& func_body)
+Parser::Parser (std::string const& func_body)
 {
     define(func_body);
 }
 
 void
-WarpXParser::define (std::string const& func_body)
+Parser::define (std::string const& func_body)
 {
     clear();
 
@@ -45,13 +45,13 @@ WarpXParser::define (std::string const& func_body)
 #endif
 }
 
-WarpXParser::~WarpXParser ()
+Parser::~Parser ()
 {
     clear();
 }
 
 void
-WarpXParser::clear ()
+Parser::clear ()
 {
     m_expression.clear();
     m_varnames.clear();
@@ -77,7 +77,7 @@ WarpXParser::clear ()
 }
 
 void
-WarpXParser::registerVariable (std::string const& name, amrex::Real& var)
+Parser::registerVariable (std::string const& name, amrex::Real& var)
 {
     // We assume this is called inside OMP parallel region
 #ifdef _OPENMP
@@ -90,7 +90,7 @@ WarpXParser::registerVariable (std::string const& name, amrex::Real& var)
 }
 
 void
-WarpXParser::registerVariables (std::vector<std::string> const& names)
+Parser::registerVariables (std::vector<std::string> const& names)
 {
 #ifdef _OPENMP
 
@@ -117,7 +117,7 @@ WarpXParser::registerVariables (std::vector<std::string> const& names)
 }
 
 void
-WarpXParser::setConstant (std::string const& name, amrex::Real c)
+Parser::setConstant (std::string const& name, amrex::Real c)
 {
 #ifdef _OPENMP
 
@@ -136,7 +136,7 @@ WarpXParser::setConstant (std::string const& name, amrex::Real c)
 }
 
 void
-WarpXParser::print () const
+Parser::print () const
 {
 #ifdef _OPENMP
 #pragma omp critical(warpx_parser_pint)
@@ -147,7 +147,7 @@ WarpXParser::print () const
 }
 
 int
-WarpXParser::depth () const
+Parser::depth () const
 {
     int n = 0;
 #ifdef _OPENMP
@@ -159,13 +159,13 @@ WarpXParser::depth () const
 }
 
 std::string const&
-WarpXParser::expr () const
+Parser::expr () const
 {
     return m_expression;
 }
 
 std::set<std::string>
-WarpXParser::symbols () const
+Parser::symbols () const
 {
     std::set<std::string> results;
 #ifdef _OPENMP
