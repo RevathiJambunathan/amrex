@@ -2,7 +2,7 @@
 #define MAIN_H
 
 #include <iostream>
-#include "Parser/WarpXParserWrapper.H"
+#include "Parser/ParserWrapper.H"
 #include "Parser/GpuParser.H"
 
 std::string phi_init_type;

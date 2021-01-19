@@ -5,7 +5,7 @@
 #include <AMReX_MultiFab.H>
 
 #include <iostream>
-#include "Parser/WarpXParserWrapper.H"
+#include "Parser/ParserWrapper.H"
 #include "Parser/GpuParser.H"
 
 void main_main ();

@@ -7,14 +7,14 @@
 #ifndef WARPX_GPU_PARSER_H_
 #define WARPX_GPU_PARSER_H_
 
-#include "Parser/WarpXParser.H"
+#include "Parser/Parser.H"
 
 #include <AMReX_Gpu.H>
 #include <AMReX_Array.H>
 #include <AMReX_TypeTraits.H>
 #include <AMReX.H>
 
-// When compiled for CPU, wrap WarpXParser and enable threading.
+// When compiled for CPU, wrap Parser and enable threading.
 // When compiled for GPU, store one copy of the parser in
 // device memory for __device__ code, and one copy of the parser
 // in host memory for __host__ code. This way, the parser can be
@@ -23,7 +23,7 @@ template <int N>
 class GpuParser
 {
 public:
-    GpuParser (WarpXParser const& wp);
+    GpuParser (Parser const& wp);
 
     GpuParser (GpuParser<N> const&) = delete;
     GpuParser (GpuParser<N> &&) = delete;
@@ -62,7 +62,7 @@ public:
 #endif
     }
 
-    void init_gpu_parser (WarpXParser const& wp); // public for CUDA
+    void init_gpu_parser (Parser const& wp); // public for CUDA
 
 protected:
 
@@ -81,7 +81,7 @@ protected:
 };
 
 template <int N>
-GpuParser<N>::GpuParser (WarpXParser const& wp)
+GpuParser<N>::GpuParser (Parser const& wp)
 {
     AMREX_ALWAYS_ASSERT(wp.depth() <= WARPX_PARSER_DEPTH);
 
@@ -128,7 +128,7 @@ GpuParser<N>::GpuParser (WarpXParser const& wp)
 }
 
 template <int N>
-void GpuParser<N>::init_gpu_parser (WarpXParser const& wp)
+void GpuParser<N>::init_gpu_parser (Parser const& wp)
 {
 #ifdef AMREX_USE_GPU
 

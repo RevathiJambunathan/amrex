@@ -1,11 +1,11 @@
 /* Copyright 2019 Weiqun Zhang
  *
- * This file is part of WarpX.
+ * This file is from the WarpX originally written by Weiqun Zhang.
  *
  * License: BSD-3-Clause-LBNL
  */
-#ifndef WARPX_PARSER_H_
-#define WARPX_PARSER_H_
+#ifndef PARSER_H_
+#define PARSER_H_
 
 #include <array>
 #include <vector>
@@ -23,12 +23,12 @@
 
 template <int N> class GpuParser;
 
-class WarpXParser
+class Parser
 {
 public:
-    WarpXParser (std::string const& func_body);
-    WarpXParser () = default;
-    ~WarpXParser ();
+    Parser (std::string const& func_body);
+    Parser () = default;
+    ~Parser ();
     void define (std::string const& func_body);
 
     void setConstant (std::string const& name, amrex::Real c);
@@ -83,7 +83,7 @@ private:
 
 inline
 amrex::Real
-WarpXParser::eval () const noexcept
+Parser::eval () const noexcept
 {
 #ifdef _OPENMP
     return wp_ast_eval<0>(m_parser[omp_get_thread_num()]->ast,nullptr);
@@ -95,7 +95,7 @@ WarpXParser::eval () const noexcept
 template <typename T, typename... Ts>
 inline
 amrex::Real
-WarpXParser::eval (T x, Ts... yz) const noexcept
+Parser::eval (T x, Ts... yz) const noexcept
 {
 #ifdef _OPENMP
     unpack(m_variables[omp_get_thread_num()].data(), x, yz...);
@@ -108,7 +108,7 @@ WarpXParser::eval (T x, Ts... yz) const noexcept
 template <typename T>
 inline
 void
-WarpXParser::unpack (amrex::Real* p, T x) const noexcept
+Parser::unpack (amrex::Real* p, T x) const noexcept
 {
     *p = x;
 }
@@ -116,7 +116,7 @@ WarpXParser::unpack (amrex::Real* p, T x) const noexcept
 template <typename T, typename... Ts>
 inline
 void
-WarpXParser::unpack (amrex::Real* p, T x, Ts... yz) const noexcept
+Parser::unpack (amrex::Real* p, T x, Ts... yz) const noexcept
 {
     *p++ = x;
     unpack(p, yz...);
