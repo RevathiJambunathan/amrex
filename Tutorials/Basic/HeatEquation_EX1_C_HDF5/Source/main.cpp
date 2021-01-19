@@ -4,7 +4,9 @@
 #include <AMReX_ParmParse.H>
 #include <AMReX_Print.H>
 #include "Parser/WarpXParserWrapper.H"
+#include "Parser/ParserUtil.H"
 
+#include "main.H"
 #include "myfunc.H"
 
 using namespace amrex;
@@ -47,6 +49,15 @@ void main_main ()
         // Default nsteps to 10, allow us to set it to something else in the inputs file
         nsteps = 10;
         pp.query("nsteps",nsteps);
+
+        phi_init_type = "default";
+        pp.query("phi_init_type", phi_init_type);
+        amrex::Print() << " phi_init_type " << phi_init_type << "\n";
+        if ( phi_init_type == "parse_phi_function" ) {
+            Store_parserString(pp, "phi_init_function(x,y,z)", str_phi_init_function);
+            phi_parser = std::make_unique<ParserWrapper<3>>(
+                             makeParser(str_phi_init_function,{"x","y","z"}));
+        } 
     }
 
     // make BoxArray and Geometry
@@ -88,7 +99,11 @@ void main_main ()
 
     GpuArray<Real,AMREX_SPACEDIM> dx = geom.CellSizeArray();
 
-    init_phi(phi_new, geom);
+    if (phi_init_type == "default") {
+        init_phi(phi_new, geom);
+    } else if (phi_init_type == "parse_phi_function") {
+        init_phi_withparser(phi_new, geom, getParser(phi_parser));
+    }
     // ========================================
 
     Real cfl = 0.9;
