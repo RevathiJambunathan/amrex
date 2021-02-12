@@ -9,6 +9,7 @@ my_constants.zc = 0.25
 my_constants.width = 0.1
 phi_init_type = "parse_phi_function"
 phi_init_function(x,y,z) = " 1.0 + amp * exp(-(( (x-xc)*(x-xc) + (y-yc)*(y-yc) + (z-zc)*(z-zc) )/(width*width)))"
+diffusionCoefficient = 0.5
 
 #amrex.v = 1
 #amrex.async_out = 1  # If we use more than 64 processes, async_out will require MPI_THREAD_MULTIPLE

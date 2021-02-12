@@ -8,7 +8,7 @@ void advance (MultiFab& phi_old,
               MultiFab& phi_new,
 	      Array<MultiFab, AMREX_SPACEDIM>& flux,
 	      Real dt,
-              Geometry const& geom)
+              Geometry const& geom, amrex::Real diffusion_coefficient)
 {
 
     // Fill the ghost cells of each grid from the other grids
@@ -45,20 +45,20 @@ void advance (MultiFab& phi_old,
         amrex::ParallelFor(xbx,
         [=] AMREX_GPU_DEVICE (int i, int j, int k)
         {
-            compute_flux_x(i,j,k,fluxx,phi,dxinv);
+            compute_flux_x(i,j,k,fluxx,phi,dxinv,diffusion_coefficient);
         });
 
         amrex::ParallelFor(ybx,
         [=] AMREX_GPU_DEVICE (int i, int j, int k)
         {
-            compute_flux_y(i,j,k,fluxy,phi,dyinv);
+            compute_flux_y(i,j,k,fluxy,phi,dyinv,diffusion_coefficient);
         });
 
 #if (AMREX_SPACEDIM > 2)
         amrex::ParallelFor(zbx,
         [=] AMREX_GPU_DEVICE (int i, int j, int k)
         {
-            compute_flux_z(i,j,k,fluxz,phi,dzinv);
+            compute_flux_z(i,j,k,fluxz,phi,dzinv,diffusion_coefficient);
         });
 #endif
     }
