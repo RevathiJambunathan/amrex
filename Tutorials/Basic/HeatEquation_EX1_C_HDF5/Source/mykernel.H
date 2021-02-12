@@ -26,18 +26,20 @@ void init_phi (int i, int j, int k,
 AMREX_GPU_DEVICE AMREX_FORCE_INLINE
 void compute_flux_x (int i, int j, int k,
                      amrex::Array4<amrex::Real> const& fluxx,
-                     amrex::Array4<amrex::Real const> const& phi, amrex::Real dxinv)
+                     amrex::Array4<amrex::Real const> const& phi, amrex::Real dxinv,
+                     amrex::Real diffusion_coefficient)
 {
-    fluxx(i,j,k) = (phi(i,j,k)-phi(i-1,j,k)) * dxinv;
+    fluxx(i,j,k) = diffusion_coefficient * (phi(i,j,k)-phi(i-1,j,k)) * dxinv;
 }
 
 
 AMREX_GPU_DEVICE AMREX_FORCE_INLINE
 void compute_flux_y (int i, int j, int k,
                      amrex::Array4<amrex::Real> const& fluxy,
-                     amrex::Array4<amrex::Real const> const& phi, amrex::Real dyinv)
+                     amrex::Array4<amrex::Real const> const& phi, amrex::Real dyinv,
+                     amrex::Real diffusion_coefficient)
 {
-    fluxy(i,j,k) = (phi(i,j,k)-phi(i,j-1,k)) * dyinv;
+    fluxy(i,j,k) = diffusion_coefficient * (phi(i,j,k)-phi(i,j-1,k)) * dyinv;
 }
 
 
@@ -45,9 +47,10 @@ void compute_flux_y (int i, int j, int k,
 AMREX_GPU_DEVICE AMREX_FORCE_INLINE
 void compute_flux_z (int i, int j, int k,
                      amrex::Array4<amrex::Real> const& fluxz,
-                     amrex::Array4<amrex::Real const> const& phi, amrex::Real dzinv)
+                     amrex::Array4<amrex::Real const> const& phi, amrex::Real dzinv,
+                     amrex::Real diffusion_coefficient)
 {
-    fluxz(i,j,k) = (phi(i,j,k)-phi(i,j,k-1)) * dzinv;
+    fluxz(i,j,k) = diffusion_coefficient * (phi(i,j,k)-phi(i,j,k-1)) * dzinv;
 }
 #endif
 

@@ -58,6 +58,11 @@ void main_main ()
             phi_parser = std::make_unique<ParserWrapper<3>>(
                              makeParser(str_phi_init_function,{"x","y","z"}));
         } 
+ 
+        // Default diffusion_coefficient = 1
+        diffusion_coefficient = 1.;
+        pp.query("diffusionCoefficient", diffusion_coefficient);
+
     }
 
     // make BoxArray and Geometry
@@ -142,7 +147,7 @@ void main_main ()
         MultiFab::Copy(phi_old, phi_new, 0, 0, 1, 0);
 
         // new_phi = old_phi + dt * (something)
-        advance(phi_old, phi_new, flux, dt, geom); 
+        advance(phi_old, phi_new, flux, dt, geom, diffusion_coefficient);
         time = time + dt;
         
         // Tell the I/O Processor to write out which step we're doing
