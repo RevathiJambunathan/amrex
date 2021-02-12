@@ -4,6 +4,10 @@
 #include <AMReX_Geometry.H>
 #include <AMReX_MultiFab.H>
 
+#include <iostream>
+#include "Parser/ParserWrapper.H"
+#include "Parser/GpuParser.H"
+
 void main_main ();
 
 void advance (amrex::MultiFab& phi_old,
@@ -13,4 +17,8 @@ void advance (amrex::MultiFab& phi_old,
               amrex::Geometry const& geom);
 
 void init_phi (amrex::MultiFab& phi_new, amrex::Geometry const& geom);
+
+
+void init_phi_withparser( amrex::MultiFab& phi_new, amrex::Geometry const& geom,
+                          HostDeviceParser<3> const& phi_parser);
 #endif

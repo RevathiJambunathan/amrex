@@ -16,6 +16,20 @@ target_sources( ${_exe_name}
    ${_src_dir}/myfunc.cpp
    ${_src_dir}/myfunc.H
    ${_src_dir}/mykernel.H
+   ${_src_dir}/main.H
+   ${_src_dir}/Parser/Parser.cpp
+   ${_src_dir}/Parser/wp_parser_c.cpp
+   ${_src_dir}/Parser/wp_parser.lex.cpp
+   ${_src_dir}/Parser/wp_parser.tab.cpp
+   ${_src_dir}/Parser/wp_parser_y.cpp
+   ${_src_dir}/Parser/Parser.H
+   ${_src_dir}/Parser/wp_parser_c.h
+   ${_src_dir}/Parser/wp_parser.l
+   ${_src_dir}/Parser/wp_parser.lex.h
+   ${_src_dir}/Parser/wp_parser.tab.h
+   ${_src_dir}/Parser/wp_parser.y
+   ${_src_dir}/Parser/wp_parser_y.h
+   ${_src_dir}/Parser/GpuParser.H
    )
 
 target_include_directories( ${_exe_name} PRIVATE  ${_src_dir} )

@@ -2,6 +2,13 @@ nsteps = 1000
 plot_int = 100
 n_cell = 128
 max_grid_size = 128
+my_constants.amp = 1.0
+my_constants.xc = 0.25
+my_constants.yc = 0.25
+my_constants.zc = 0.25
+my_constants.width = 0.1
+phi_init_type = "parse_phi_function"
+phi_init_function(x,y,z) = " 1.0 + amp * exp(-(( (x-xc)*(x-xc) + (y-yc)*(y-yc) + (z-zc)*(z-zc) )/(width*width)))"
 
 #amrex.v = 1
 #amrex.async_out = 1  # If we use more than 64 processes, async_out will require MPI_THREAD_MULTIPLE
