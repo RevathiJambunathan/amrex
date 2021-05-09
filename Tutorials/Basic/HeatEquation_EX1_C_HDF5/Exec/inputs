@@ -1,15 +1,39 @@
 nsteps = 1000
-plot_int = 100
+plot_int = 1
 n_cell = 128
 max_grid_size = 128
-my_constants.amp = 1.0
-my_constants.xc = 0.25
-my_constants.yc = 0.25
-my_constants.zc = 0.25
-my_constants.width = 0.1
-phi_init_type = "parse_phi_function"
-phi_init_function(x,y,z) = " 1.0 + amp * exp(-(( (x-xc)*(x-xc) + (y-yc)*(y-yc) + (z-zc)*(z-zc) )/(width*width)))"
 diffusionCoefficient = 0.5
+###############################################################
+## The init type "generic_2D_gaussian_RandomParameters"      ##
+## only in 2D!                                               ##
+## The gaussian generated is as follows                      ##
+## Z = A * exp(- (a*(x-xc)^2 + b*(y-yc)^2 + c*(z-zc)^2))     ##
+## A = [Amin,Amax]                                           ##
+## xc = xmin + U(0,1)*Lx, yc = ymin + U(0,1)*Ly              ##
+## a = cos^2(theta)/(2*sigmax^2) + sin^2(theta)/(2*sigmay^2) ##
+## b = -sin(2theta)/(4*sigmax^2) + sin(2theta)/(4*sigmay^2)  ##
+## c = sin^2(theta)/(2*sigmax^2) + cos^2(theta)/(2*sigmay^2) ##
+## sigmax = dx*(U(sigmax_min,sigmax_max))                    ##
+## sigmay = dy*(U(sigmay_min,sigmay_max))                    ##
+---------------------------------------------------------------
+
+phi_init_type = "generic_2Dgaussian_RandomParameters"
+amplitude_min = 1.0 1.0 1. 1. 1. 1.
+amplitude_max = 1.0 1.0 1. 1. 1. 1.
+sigmax_min = 20. 9. 20. 9. 20 9.
+sigmax_max = 20. 9. 20. 9. 20 9.
+sigmay_min = 9. 20. 9. 20. 9. 20.
+sigmay_max = 9. 20. 9. 20. 9. 20.
+num_gaussians = 6
+
+
+#my_constants.amp = 1.0
+#my_constants.xc = 0.25
+#my_constants.yc = 0.25
+#my_constants.zc = 0.25
+#my_constants.width = 0.1
+#phi_init_type = "parse_phi_function"
+#phi_init_function(x,y,z) = " 1.0 + amp * exp(-(( (x-xc)*(x-xc) + (y-yc)*(y-yc) + (z-zc)*(z-zc) )/(width*width)))"
 
 #amrex.v = 1
 #amrex.async_out = 1  # If we use more than 64 processes, async_out will require MPI_THREAD_MULTIPLE

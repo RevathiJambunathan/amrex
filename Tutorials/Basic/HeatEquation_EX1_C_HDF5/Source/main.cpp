@@ -1,5 +1,3 @@
-#include <AMReX_Gpu.H>
-#include <AMReX_Utility.H>
 #include <AMReX_PlotFileUtil.H>
 #include <AMReX_ParmParse.H>
 #include <AMReX_Print.H>
@@ -57,11 +55,51 @@ void main_main ()
             Store_parserString(pp, "phi_init_function(x,y,z)", str_phi_init_function);
             phi_parser = std::make_unique<ParserWrapper<3>>(
                              makeParser(str_phi_init_function,{"x","y","z"}));
-        } 
+        }
  
         // Default diffusion_coefficient = 1
         diffusion_coefficient = 1.;
         pp.query("diffusionCoefficient", diffusion_coefficient);
+      
+        
+#if (AMREX_SPACEDIM==2)
+        pp.get("num_gaussians", num_gaussians);
+        amrex::Vector<amrex::Real> amplitude_min_v(num_gaussians); 
+        amrex::Vector<amrex::Real> amplitude_max_v(num_gaussians); 
+        amrex::Vector<amrex::Real> sigmax_min_v(num_gaussians); 
+        amrex::Vector<amrex::Real> sigmax_max_v(num_gaussians); 
+        amrex::Vector<amrex::Real> sigmay_min_v(num_gaussians); 
+        amrex::Vector<amrex::Real> sigmay_max_v(num_gaussians); 
+        amrex::Vector<amrex::Real> xc_v(num_gaussians); 
+        amrex::Vector<amrex::Real> yc_v(num_gaussians); 
+
+        amplitude_min.resize(num_gaussians);
+        amplitude_max.resize(num_gaussians);
+        sigmax_min.resize(num_gaussians);
+        sigmax_max.resize(num_gaussians);
+        sigmay_min.resize(num_gaussians);
+        sigmay_max.resize(num_gaussians);
+        xc.resize(num_gaussians);
+        yc.resize(num_gaussians);
+        theta.resize(num_gaussians);
+        amplitude.resize(num_gaussians);
+        sigmax.resize(num_gaussians);
+        sigmay.resize(num_gaussians);
+
+        pp.getarr("amplitude_min", amplitude_min_v, 0, num_gaussians);
+        pp.getarr("amplitude_max", amplitude_max_v, 0, num_gaussians);
+        pp.getarr("sigmax_min", sigmax_min_v, 0, num_gaussians);
+        pp.getarr("sigmay_min", sigmay_min_v, 0, num_gaussians);
+        pp.getarr("sigmax_max", sigmax_max_v, 0, num_gaussians);
+        pp.getarr("sigmay_max", sigmay_max_v, 0, num_gaussians);
+        std::copy(amplitude_min_v.begin(), amplitude_min_v.end(), amplitude_min.begin());
+        std::copy(amplitude_max_v.begin(), amplitude_max_v.end(), amplitude_max.begin());
+        std::copy(sigmax_min_v.begin(), sigmax_min_v.end(), sigmax_min.begin());
+        std::copy(sigmax_max_v.begin(), sigmax_max_v.end(), sigmax_max.begin());
+        std::copy(sigmay_min_v.begin(), sigmay_min_v.end(), sigmay_min.begin());
+        std::copy(sigmay_max_v.begin(), sigmay_max_v.end(), sigmay_max.begin());
+
+#endif
 
     }
 
@@ -108,6 +146,15 @@ void main_main ()
         init_phi(phi_new, geom);
     } else if (phi_init_type == "parse_phi_function") {
         init_phi_withparser(phi_new, geom, getParser(phi_parser));
+#if (AMREX_SPACEDIM==2)    
+    } else if (phi_init_type == "generic_2Dgaussian_RandomParameters") {
+        init_phi_generic_2Dgaussian_RandomParameters(phi_new, geom,
+            amplitude_min.dataPtr(), amplitude_max.dataPtr(),
+            sigmax_min.dataPtr(), sigmax_max.dataPtr(),
+            sigmay_min.dataPtr(), sigmay_max.dataPtr(),
+            sigmax.dataPtr(), sigmay.dataPtr(), amplitude.dataPtr(), theta.dataPtr(),
+            xc.dataPtr(), yc.dataPtr(), num_gaussians);
+#endif
     }
     // ========================================
 
