@@ -1,0 +1,25 @@
+n_cell = 128
+max_grid_size = 64
+
+# Domain half-width: [-L, L]^2 with L >> a so far-field BCs are accurate
+L_domain = 3.0
+
+# Cylinder radius
+a_cyl    = 1.0
+
+# Dielectric permittivities
+eps1     = 5.0   # inside cylinder
+eps2     = 1.0   # outside cylinder
+
+# Applied far-field magnitude (E field in x-direction)
+E0       = 1.0
+
+# All-regular EB geometry: no cut cells, cylinder is purely in sigma
+eb2.geom_type = all_regular
+
+# MLMG solver settings
+verbose        = 2
+bottom_verbose = 0
+max_iter       = 200
+max_fmg_iter   = 0
+reltol         = 1.e-10
